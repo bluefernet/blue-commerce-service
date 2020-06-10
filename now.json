@@ -2,6 +2,14 @@
     "version": 2,
     "builds": [
         {
+            "src": "./pkg/categories/transport/http/*.ts",
+            "use": "@now/node"
+        },
+        {
+            "src": "./pkg/orders/transport/http/*.ts",
+            "use": "@now/node"
+        },
+        {
             "src": "./pkg/products/transport/http/*.ts",
             "use": "@now/node"
         }
