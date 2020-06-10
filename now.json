@@ -1,0 +1,55 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "./pkg/shared/**/*.ts",
+            "use": "@now/node"
+        },
+        {
+            "src": "./pkg/categories/**/*.ts",
+            "use": "@now/node"
+        },
+        {
+            "src": "./pkg/orders/**/*.ts",
+            "use": "@now/node"
+        },
+        {
+            "src": "./pkg/products/**/*.ts",
+            "use": "@now/node"
+        },
+        {
+            "src": "./pkg/users/**/*.ts",
+            "use": "@now/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/v1/products",
+            "dest": "/pkg/products/transport/http/products-endpoint.ts"
+        },
+        {
+            "src": "/v1/products/(?<id>[^/]+)",
+            "dest": "/pkg/products/transport/http/product-endpoint.ts?id=$id"
+        },
+        {
+            "src": "/v1/categories",
+            "dest": "/pkg/categories/transport/http/categories-endpoint.ts"
+        },
+        {
+            "src": "/v1/categories/(?<id>[^/]+)",
+            "dest": "/pkg/categories/transport/http/category-endpoint.ts?id=$id"
+        },
+        {
+            "src": "/v1/orders",
+            "dest": "/pkg/orders/transport/http/orders-endpoint.ts"
+        },
+        {
+            "src": "/v1/orders/(?<id>[^/]+)",
+            "dest": "/pkg/orders/transport/http/order-endpoint.ts?id=$id"
+        },
+        {
+            "src": "/v1/orders/(?<id>[^/]+)/products",
+            "dest": "/pkg/orders/transport/http/order-products-endpoint.ts?id=$id"
+        }
+    ]
+}
