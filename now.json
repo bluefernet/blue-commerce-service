@@ -2,10 +2,6 @@
     "version": 2,
     "builds": [
         {
-            "src": "./pkg/shared/**/*.ts",
-            "use": "@now/node"
-        },
-        {
             "src": "./pkg/categories/**/*.ts",
             "use": "@now/node"
         },
@@ -15,10 +11,6 @@
         },
         {
             "src": "./pkg/products/**/*.ts",
-            "use": "@now/node"
-        },
-        {
-            "src": "./pkg/users/**/*.ts",
             "use": "@now/node"
         }
     ],
