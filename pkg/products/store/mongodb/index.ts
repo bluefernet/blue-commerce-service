@@ -35,7 +35,7 @@ export const asyncProductsList = async (
 		collectionLength = await client
 			.db("db")
 			.collection(constants.COLLECTION_PRODUCTS)
-			.find({ deleted: false, name: { $regex: /nameProduct/, $options: 'i' }, category: { $regex: /category/, $options: 'i' } })
+			.find({ deleted: false, name: { $regex: /.nameProduct./, $options: 'i' }, category: { $regex: /.category./, $options: 'i' } })
 			.count();
 	} else {
 		if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
@@ -43,7 +43,7 @@ export const asyncProductsList = async (
 			collectionLength = await client
 				.db("db")
 				.collection(constants.COLLECTION_PRODUCTS)
-				.find({ deleted: false, name: { $regex: /nameProduct/, $options: 'i' } })
+				.find({ deleted: false, name: { $regex: /.nameProduct./, $options: 'i' } })
 				.count();
 		}
 		else {
@@ -52,7 +52,7 @@ export const asyncProductsList = async (
 				collectionLength = await client
 					.db("db")
 					.collection(constants.COLLECTION_PRODUCTS)
-					.find({ deleted: false, category: { $regex: /category/, $options: 'i' } })
+					.find({ deleted: false, category: { $regex: /.category./, $options: 'i' } })
 					.count();
 			}
 			else {
@@ -84,17 +84,17 @@ export const asyncProductsList = async (
 		products = await client
 			.db('db')
 			.collection(constants.COLLECTION_PRODUCTS)
-			.find({ deleted: false, name: { $regex: /nameProduct/, $options: 'i' }, category: { $regex: /category/, $options: 'i' } }, { projection: { _id: 0 } })
+			.find({ deleted: false, name: { $regex: /.nameProduct./, $options: 'i' }, category: { $regex: /.category./, $options: 'i' } }, { projection: { _id: 0 } })
 			.limit(limit)
 			.skip(skip)
 			.toArray();
 	} else {
 		if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
-			console.log('filter only name  ' + nameProduct + category)
+			console.log('filter only name ' + nameProduct + category)
 			products = await client
 				.db('db')
 				.collection(constants.COLLECTION_PRODUCTS)
-				.find({ deleted: false, name: { $regex: /nameProduct/, $options: 'i' } }, { projection: { _id: 0 } })
+				.find({ deleted: false, name: { $regex: /.nameProduct./, $options: 'i' } }, { projection: { _id: 0 } })
 				.limit(limit)
 				.skip(skip)
 				.toArray();
@@ -105,7 +105,7 @@ export const asyncProductsList = async (
 				collectionLength = await client
 					.db("db")
 					.collection(constants.COLLECTION_PRODUCTS)
-					.find({ deleted: false, category: { $regex: /category/, $options: 'i' } }, { projection: { _id: 0 } })
+					.find({ deleted: false, category: { $regex: /.category./, $options: 'i' } }, { projection: { _id: 0 } })
 					.count();
 			}
 			else {
