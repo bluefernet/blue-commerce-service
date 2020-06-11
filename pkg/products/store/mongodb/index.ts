@@ -40,7 +40,7 @@ export const asyncProductsList = async (
 	const collectionLength = await client
 		.db("db")
 		.collection(constants.COLLECTION_PRODUCTS)
-		.find({ query })
+		.find(query)
 		.count()
 //		.find({ deleted: false, name: {$regex: nameProduct, $options: 'i'}, category: {$regex: category, $options: 'i'} })
 //		.count();
@@ -58,7 +58,7 @@ export const asyncProductsList = async (
 	const products = await client
 		.db('db')
 		.collection(constants.COLLECTION_PRODUCTS)
-		.find({ query }, { projection: { _id: 0 } })
+		.find(query , { projection: { _id: 0 } })
 		.limit(limit)
 		.skip(skip)
 		.toArray();
