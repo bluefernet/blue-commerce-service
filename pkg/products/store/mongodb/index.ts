@@ -42,10 +42,8 @@ export const asyncProductsList = async (
 	const collectionLength = await client
 		.db("db")
 		.collection(constants.COLLECTION_PRODUCTS)
-		.find(query)
-		.count()
-//		.find({ deleted: false, name: {$regex: nameProduct, $options: 'i'}, category: {$regex: category, $options: 'i'} })
-//		.count();
+		.find({ deleted: false, name: {$regex: /nameProduct/, $options: 'i'}, category: {$regex: /category/, $options: 'i'} })
+		.count();
 
 	let limit: number = pageSize;
 	let skip: number = Number(pageToken) * pageSize;
@@ -60,7 +58,7 @@ export const asyncProductsList = async (
 	const products = await client
 		.db('db')
 		.collection(constants.COLLECTION_PRODUCTS)
-		.find(query , { projection: { _id: 0 } })
+		.find({ deleted: false, name: {$regex: /nameProduct/, $options: 'i'}, category: {$regex: /category/, $options: 'i'} }, { projection: { _id: 0 } })
 		.limit(limit)
 		.skip(skip)
 		.toArray();
