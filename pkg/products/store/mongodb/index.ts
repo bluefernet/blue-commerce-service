@@ -31,6 +31,7 @@ export const asyncProductsList = async (
 	let collectionLength = 0;
 
 	if (nameProduct != "" && nameProduct != null && nameProduct != undefined && category != "" && category != null && category != undefined) {
+		console.log('filter name and category ' + nameProduct + category)
 		collectionLength = await client
 			.db("db")
 			.collection(constants.COLLECTION_PRODUCTS)
@@ -38,6 +39,7 @@ export const asyncProductsList = async (
 			.count();
 	} else {
 		if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
+			console.log('filter only name ' + nameProduct + category)
 			collectionLength = await client
 				.db("db")
 				.collection(constants.COLLECTION_PRODUCTS)
@@ -46,6 +48,7 @@ export const asyncProductsList = async (
 		}
 		else {
 			if (category != "" && category != null && category != undefined) {
+				console.log('filter only category ' + category)
 				collectionLength = await client
 					.db("db")
 					.collection(constants.COLLECTION_PRODUCTS)
@@ -53,6 +56,7 @@ export const asyncProductsList = async (
 					.count();
 			}
 			else {
+				console.log('no filter ' + nameProduct + category)
 				collectionLength = await client
 					.db("db")
 					.collection(constants.COLLECTION_PRODUCTS)
@@ -76,6 +80,7 @@ export const asyncProductsList = async (
 	];
 
 	if (nameProduct != "" && nameProduct != null && nameProduct != undefined && category != "" && category != null && category != undefined) {
+		console.log('filter name and category ' + nameProduct + category)
 		products = await client
 			.db('db')
 			.collection(constants.COLLECTION_PRODUCTS)
@@ -85,6 +90,7 @@ export const asyncProductsList = async (
 			.toArray();
 	} else {
 		if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
+			console.log('filter only name  ' + nameProduct + category)
 			products = await client
 				.db('db')
 				.collection(constants.COLLECTION_PRODUCTS)
@@ -95,6 +101,7 @@ export const asyncProductsList = async (
 		}
 		else {
 			if (category != "" && category != null && category != undefined) {
+				console.log('filter only category ' + nameProduct + category)
 				collectionLength = await client
 					.db("db")
 					.collection(constants.COLLECTION_PRODUCTS)
@@ -102,6 +109,7 @@ export const asyncProductsList = async (
 					.count();
 			}
 			else {
+				console.log('no filter ' + nameProduct + category)
 				products = await client
 					.db('db')
 					.collection(constants.COLLECTION_PRODUCTS)
