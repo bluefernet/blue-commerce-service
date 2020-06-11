@@ -28,12 +28,14 @@ export const asyncProductsList = async (
 	nameProduct: string
 ): Promise<ProductsList> => {
 	const client = await MongoDatabase.connect();
-
+	const query = "deleted: false, name: {$regex: nameProduct, $options: 'i'}, category: {$regex: category, $options: 'i'}"
 	const collectionLength = await client
 		.db("db")
 		.collection(constants.COLLECTION_PRODUCTS)
-		.find({ deleted: false, name: {$regex: nameProduct, $options: 'i'}, category: {$regex: category, $options: 'i'} })
-		.count();
+		.find({ query })
+		.count()
+//		.find({ deleted: false, name: {$regex: nameProduct, $options: 'i'}, category: {$regex: category, $options: 'i'} })
+//		.count();
 
 	let limit: number = pageSize;
 	let skip: number = Number(pageToken) * pageSize;
