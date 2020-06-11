@@ -16,8 +16,8 @@
     ],
     "routes": [
         {
-            "src": "/v1/products/(?<id>[^/]+)",
-            "dest": "/pkg/products/transport/http/products-endpoint.ts?id=$id"
+            "src": "/v1/products",
+            "dest": "/pkg/products/transport/http/products-endpoint.ts"
         },
         {
             "src": "/v1/products/(?<id>[^/]+)",
