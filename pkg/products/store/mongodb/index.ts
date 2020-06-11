@@ -28,7 +28,15 @@ export const asyncProductsList = async (
 	nameProduct: string
 ): Promise<ProductsList> => {
 	const client = await MongoDatabase.connect();
-	const query = "deleted: false, name: {$regex: nameProduct, $options: 'i'}, category: {$regex: category, $options: 'i'}"
+	
+	let query = "deleted: false" 
+	if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
+		query += ", name: {$regex: nameProduct, $options: 'i'}"
+	}
+	if (category != "" && category != null && category != undefined) {
+		query += ", category: {$regex: category, $options: 'i'}"
+	}
+	console.log(query)
 	const collectionLength = await client
 		.db("db")
 		.collection(constants.COLLECTION_PRODUCTS)
@@ -50,7 +58,7 @@ export const asyncProductsList = async (
 	const products = await client
 		.db('db')
 		.collection(constants.COLLECTION_PRODUCTS)
-		.find({ deleted: false }, { projection: { _id: 0 } })
+		.find({ query }, { projection: { _id: 0 } })
 		.limit(limit)
 		.skip(skip)
 		.toArray();
