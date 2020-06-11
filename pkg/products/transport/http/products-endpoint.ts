@@ -22,15 +22,18 @@ app.get(
 	'*',
 	cors(corsOptions),
 	async (req: Request, res: Response): Promise<void> => {
-		let pageSize: number = parseInt(req.params.page_size);
-		let pageToken: string = req.params.page_token;
-		let category: string = req.params.location;
-		let name: string = req.params.name;
+		let pageSize: number | undefined= parseInt(req.query.page_size as string);
+		let pageToken: string = req.query.page_token as string;
+		let category: string = req.query.location as string;
+		let name: string = req.query.name as string;
 		console.log('GET - products - params ' + pageSize + pageToken + category + name)
-		if (name === undefined || name === null) {
+		if (name === undefined || name === null || name == undefined || name == null) {
 			name = "";
 		}
-		if (Number.isNaN(pageSize)) {
+		if (category === undefined || category === null || category == undefined || category == null) {
+			category = "";
+		}
+		if (Number.isNaN(pageSize) || pageSize == undefined) {
 			pageSize = 0;
 		}
 		if (
