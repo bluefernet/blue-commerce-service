@@ -1,6 +1,6 @@
 const corsOptions = {
 	origin: [
-		"*"
+		"https://blue-commerce-ui.now.sh/"
 	],
 	methods: [
 		"GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"
