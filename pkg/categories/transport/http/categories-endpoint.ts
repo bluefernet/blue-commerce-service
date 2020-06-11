@@ -3,8 +3,8 @@ import express from 'express';
 import { json } from 'body-parser';
 import { urlencoded } from "body-parser";
 import {
-asyncCategorysList, 
-asyncCreateCategory
+	asyncCategorysList,
+	asyncCreateCategory
 } from '../../service/base';
 import { Category } from '../../../shared/types'
 import corsOptions from "../../../shared/cors";

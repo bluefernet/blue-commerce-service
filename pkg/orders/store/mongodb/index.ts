@@ -1,5 +1,5 @@
 import MongoDatabase from '../../../shared/mongodb'
-import { Order, OrdersList } from '../../../shared/types'
+import { Order, OrdersList, Product, ProductOrder } from '../../../shared/types'
 import * as constants from '../../../shared/constants'
 import { ulid } from 'ulid'
 
@@ -27,7 +27,6 @@ export const asyncOrdersList = async (): Promise<OrdersList> => {
 		.db('db')
 		.collection(constants.COLLECTION_ORDERS)
 		.find({ deleted: false }, { projection: { _id: 0 } })
-		.sort({ date: 1 }) //Decrescente
 		.toArray();
 	//TODO- LIMIT/SKIP --> PAGINAZIONE
 	const ordersList: OrdersList = {
@@ -83,4 +82,28 @@ export const asyncUpdateOrder = async (order: Order): Promise<Order> => {
 		throw new Error('Update operation failed');
 	}
 	return order
+}
+
+export const asyncGetOrderProducts = async (orderId: string): Promise<Product[]> => {
+	const client = await MongoDatabase.connect();
+	let products: Product[] = [
+	];
+	let order = <Order>await client
+		.db('db')
+		.collection(constants.COLLECTION_ORDERS)
+		.findOne({ id: orderId })
+
+	let cart: ProductOrder[] = order.cart
+	for (let i = 0; i < cart.length; i++) {
+		const productOrder: ProductOrder = cart[i];
+		let product = <Product>await client
+			.db('db')
+			.collection(constants.COLLECTION_ORDERS)
+			.findOne({ id: productOrder.idProduct })
+		if (product) {
+			products.concat(product)
+		}
+	}
+
+	return products
 }

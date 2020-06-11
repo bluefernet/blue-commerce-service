@@ -3,7 +3,7 @@ export interface User {
 	name: String;
 	surname: String;
 	date: String;
-	deleted: boolean
+	deleted: Boolean;
 }
 
 export interface Order {
@@ -21,6 +21,7 @@ export interface ProductOrder {
 
 export interface Product {
 	id: String;
+	name: String;
 	description: String;
 	idCategory: String;
 	amount: Number;
@@ -37,6 +38,12 @@ export interface Category {
 export interface OrdersList {
 	orders: Order[],
 	nextpageToken: String,
+	totalSize: Number
+}
+
+export interface ProductsList {
+	products: Product[],
+	nextPageToken: String,
 	totalSize: Number
 }
 

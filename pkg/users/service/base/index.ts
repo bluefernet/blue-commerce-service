@@ -56,4 +56,4 @@ export const asyncUpdateUser =
 
 		let data: User = await _asyncUpdateUser(user)
 		return data
-    }
+	}

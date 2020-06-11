@@ -1,10 +1,10 @@
 import {
-    asyncCreateProduct as _asyncCreateProduct,
+	asyncCreateProduct as _asyncCreateProduct,
 	asyncProductsList as _asyncProductsList,
 	asyncGetProduct as _asyncGetProduct,
 	asyncUpdateProduct as _asyncUpdateProduct
 } from '../../store/mongodb'
-import { Product, ProductOrder } from '../../../shared/types'
+import { Product, ProductOrder, ProductsList } from '../../../shared/types'
 import * as constants from '../../../shared/constants'
 
 export const asyncCreateProduct = async (product: Product): Promise<Product> => {
@@ -16,9 +16,14 @@ export const asyncCreateProduct = async (product: Product): Promise<Product> => 
 	}
 }
 
-export const asyncProductsList = async (): Promise<Product[]> => {
-	const productsList = await _asyncProductsList();
-	if (productsList) {
+export const asyncProductsList = async (_pageSize: number,
+	_pageToken: string,
+	_category: string,
+	_name: string
+): Promise<ProductsList> => {
+	const pageToken: number = parseInt(_pageToken);
+	const productsList = await _asyncProductsList(_pageSize, pageToken, _category, _name);
+	if (productsList.products) {
 		return productsList
 	} else {
 		throw new Error('There is no List of orders specified');
@@ -56,4 +61,4 @@ export const asyncUpdateProduct =
 
 		let data: Product = await _asyncUpdateProduct(product)
 		return data
-    }
+	}

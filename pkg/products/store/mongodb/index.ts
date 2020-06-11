@@ -1,5 +1,5 @@
 import MongoDatabase from '../../../shared/mongodb'
-import { Product, ProductOrder } from '../../../shared/types'
+import { Product, ProductOrder, ProductsList } from '../../../shared/types'
 import * as constants from '../../../shared/constants'
 import { ulid } from 'ulid'
 
@@ -21,17 +21,51 @@ export const asyncCreateProduct = async (product: Product): Promise<Product> => 
 	return product;
 }
 
-export const asyncProductsList = async (): Promise<Product[]> => {
+export const asyncProductsList = async (
+	pageSize: number,
+	pageToken: number,
+	category: string,
+	nameProduct: string
+): Promise<ProductsList> => {
 	const client = await MongoDatabase.connect();
+
+	const collectionLength = await client
+		.db("db")
+		.collection(constants.COLLECTION_PRODUCTS)
+		.find({ deleted: false, name: {$regex: nameProduct, $options: 'i'}, category: {$regex: category, $options: 'i'} })
+		.count();
+
+	let limit: number = pageSize;
+	let skip: number = Number(pageToken) * pageSize;
+
+	if (pageToken != 0) {
+		const calculateLimit = (pageToken + 1) * pageSize;
+		if (calculateLimit > collectionLength) {
+			limit = collectionLength - pageToken * pageSize;
+		}
+	}
+
 	const products = await client
 		.db('db')
 		.collection(constants.COLLECTION_PRODUCTS)
 		.find({ deleted: false }, { projection: { _id: 0 } })
-		.sort({ date: 1 }) //Decrescente
+		.limit(limit)
+		.skip(skip)
 		.toArray();
-	//TODO- LIMIT/SKIP --> PAGINAZIONE
 
-	return products
+	let _nextPageToken: string = "";
+	if (skip + limit < collectionLength && limit != 0) {
+		_nextPageToken = "" + (pageToken + 1);
+		_nextPageToken = Buffer.from(_nextPageToken).toString("base64");
+	}
+
+	let productsList: ProductsList = {
+		products: products,
+		nextPageToken: _nextPageToken,
+		totalSize: collectionLength
+	};
+
+	return productsList
 }
 
 export const asyncGetProduct = async (productId: string): Promise<Product> => {
