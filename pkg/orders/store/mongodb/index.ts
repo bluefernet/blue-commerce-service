@@ -96,12 +96,14 @@ export const asyncGetOrderProducts = async (orderId: string): Promise<Product[]>
 	let cart: ProductOrder[] = order.cart
 	for (let i = 0; i < cart.length; i++) {
 		const productOrder: ProductOrder = cart[i];
+		console.log(productOrder.idProduct)
 		let product = <Product>await client
 			.db('db')
 			.collection(constants.COLLECTION_PRODUCTS)
 			.findOne({ id: productOrder.idProduct })
+		console.log(product)
 		if (product) {
-			products.concat(product)
+			products.push(product)
 		}
 	}
 

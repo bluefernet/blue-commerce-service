@@ -29,7 +29,7 @@ export const asyncProductsList = async (
 ): Promise<ProductsList> => {
 	const client = await MongoDatabase.connect();
 	
-	let query = "deleted: false" 
+	let query: any = "deleted: false" 
 	if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
 		query += ", name: {$regex: nameProduct, $options: 'i'}"
 	}
