@@ -28,22 +28,21 @@ export const asyncProductsList = async (
 	nameProduct: string
 ): Promise<ProductsList> => {
 	const client = await MongoDatabase.connect();
-	
-	let query: any = {
-		"deleted": "false"
+	let collectionLength = 0;
+
+	if (nameProduct != "" && nameProduct != null && nameProduct != undefined || category != "" && category != null && category != undefined) {
+		collectionLength = await client
+			.db("db")
+			.collection(constants.COLLECTION_PRODUCTS)
+			.find({ deleted: false, $or: [{ name: { $regex: /nameProduct/, $options: 'i' } }, { category: { $regex: /category/, $options: 'i' } }] })
+			.count();
+	} else {
+		collectionLength = await client
+			.db("db")
+			.collection(constants.COLLECTION_PRODUCTS)
+			.find({ deleted: false })
+			.count();
 	}
-	if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
-		//query += ", name: {$regex: nameProduct, $options: 'i'}"
-	}
-	if (category != "" && category != null && category != undefined) {
-		//query += ", category: {$regex: category, $options: 'i'}"
-	}
-	console.log(query)
-	const collectionLength = await client
-		.db("db")
-		.collection(constants.COLLECTION_PRODUCTS)
-		.find({ deleted: false, name: {$regex: /nameProduct/, $options: 'i'}, category: {$regex: /category/, $options: 'i'} })
-		.count();
 
 	let limit: number = pageSize;
 	let skip: number = Number(pageToken) * pageSize;
@@ -55,13 +54,24 @@ export const asyncProductsList = async (
 		}
 	}
 
-	const products = await client
-		.db('db')
-		.collection(constants.COLLECTION_PRODUCTS)
-		.find({ deleted: false, name: {$regex: /nameProduct/, $options: 'i'}, category: {$regex: /category/, $options: 'i'} }, { projection: { _id: 0 } })
-		.limit(limit)
-		.skip(skip)
-		.toArray();
+	let products;
+	if (nameProduct != "" && nameProduct != null && nameProduct != undefined || category != "" && category != null && category != undefined) {
+		products = await client
+			.db('db')
+			.collection(constants.COLLECTION_PRODUCTS)
+			.find({ deleted: false, $or: [{ name: { $regex: /nameProduct/, $options: 'i' } }, { category: { $regex: /category/, $options: 'i' } }] }, { projection: { _id: 0 } })
+			.limit(limit)
+			.skip(skip)
+			.toArray();
+	} else {
+		products = await client
+			.db('db')
+			.collection(constants.COLLECTION_PRODUCTS)
+			.find({ deleted: false }, { projection: { _id: 0 } })
+			.limit(limit)
+			.skip(skip)
+			.toArray();
+	}
 
 	let _nextPageToken: string = "";
 	if (skip + limit < collectionLength && limit != 0) {
