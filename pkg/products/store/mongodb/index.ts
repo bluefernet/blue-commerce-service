@@ -30,18 +30,36 @@ export const asyncProductsList = async (
 	const client = await MongoDatabase.connect();
 	let collectionLength = 0;
 
-	if (nameProduct != "" && nameProduct != null && nameProduct != undefined || category != "" && category != null && category != undefined) {
+	if (nameProduct != "" && nameProduct != null && nameProduct != undefined && category != "" && category != null && category != undefined) {
 		collectionLength = await client
 			.db("db")
 			.collection(constants.COLLECTION_PRODUCTS)
-			.find({ deleted: false, $or: [{ name: { $regex: /nameProduct/, $options: 'i' } }, { category: { $regex: /category/, $options: 'i' } }] })
+			.find({ deleted: false, name: { $regex: /nameProduct/, $options: 'i' }, category: { $regex: /category/, $options: 'i' } })
 			.count();
 	} else {
-		collectionLength = await client
-			.db("db")
-			.collection(constants.COLLECTION_PRODUCTS)
-			.find({ deleted: false })
-			.count();
+		if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
+			collectionLength = await client
+				.db("db")
+				.collection(constants.COLLECTION_PRODUCTS)
+				.find({ deleted: false, name: { $regex: /nameProduct/, $options: 'i' } })
+				.count();
+		}
+		else {
+			if (category != "" && category != null && category != undefined) {
+				collectionLength = await client
+					.db("db")
+					.collection(constants.COLLECTION_PRODUCTS)
+					.find({ deleted: false, category: { $regex: /category/, $options: 'i' } })
+					.count();
+			}
+			else {
+				collectionLength = await client
+					.db("db")
+					.collection(constants.COLLECTION_PRODUCTS)
+					.find({ deleted: false })
+					.count();
+			}
+		}
 	}
 
 	let limit: number = pageSize;
@@ -54,23 +72,45 @@ export const asyncProductsList = async (
 		}
 	}
 
-	let products;
-	if (nameProduct != "" && nameProduct != null && nameProduct != undefined || category != "" && category != null && category != undefined) {
+	let products = [
+	];
+
+	if (nameProduct != "" && nameProduct != null && nameProduct != undefined && category != "" && category != null && category != undefined) {
 		products = await client
 			.db('db')
 			.collection(constants.COLLECTION_PRODUCTS)
-			.find({ deleted: false, $or: [{ name: { $regex: /nameProduct/, $options: 'i' } }, { category: { $regex: /category/, $options: 'i' } }] }, { projection: { _id: 0 } })
+			.find({ deleted: false, name: { $regex: /nameProduct/, $options: 'i' }, category: { $regex: /category/, $options: 'i' } }, { projection: { _id: 0 } })
 			.limit(limit)
 			.skip(skip)
 			.toArray();
 	} else {
-		products = await client
-			.db('db')
-			.collection(constants.COLLECTION_PRODUCTS)
-			.find({ deleted: false }, { projection: { _id: 0 } })
-			.limit(limit)
-			.skip(skip)
-			.toArray();
+		if (nameProduct != "" && nameProduct != null && nameProduct != undefined) {
+			products = await client
+				.db('db')
+				.collection(constants.COLLECTION_PRODUCTS)
+				.find({ deleted: false, name: { $regex: /nameProduct/, $options: 'i' } }, { projection: { _id: 0 } })
+				.limit(limit)
+				.skip(skip)
+				.toArray();
+		}
+		else {
+			if (category != "" && category != null && category != undefined) {
+				collectionLength = await client
+					.db("db")
+					.collection(constants.COLLECTION_PRODUCTS)
+					.find({ deleted: false, category: { $regex: /category/, $options: 'i' } }, { projection: { _id: 0 } })
+					.count();
+			}
+			else {
+				products = await client
+					.db('db')
+					.collection(constants.COLLECTION_PRODUCTS)
+					.find({ deleted: false }, { projection: { _id: 0 } })
+					.limit(limit)
+					.skip(skip)
+					.toArray();
+			}
+		}
 	}
 
 	let _nextPageToken: string = "";
