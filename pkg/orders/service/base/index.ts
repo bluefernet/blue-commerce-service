@@ -2,7 +2,8 @@ import {
 	asyncCreateOrder as _asyncCreateOrder,
 	asyncOrdersList as _asyncOrdersList,
 	asyncGetOrder as _asyncGetOrder,
-	asyncUpdateOrder as _asyncUpdateOrder
+	asyncUpdateOrder as _asyncUpdateOrder,
+	asyncGetOrderProducts as _asyncGetOrderProducts
 } from '../../store/mongodb'
 import { Order, OrdersList, Product } from '../../../shared/types'
 import * as constants from '../../../shared/constants'
@@ -59,6 +60,6 @@ export const asyncUpdateOrder =
 	}
 
 export const asyncGetOrderProducts = async(orderId: string): Promise<Product[]> => {
-	const products : Product[] = await asyncGetOrderProducts(orderId)
+	const products : Product[] = await _asyncGetOrderProducts(orderId)
 	return products
 }

@@ -22,7 +22,7 @@ export const asyncProductsList = async (_pageSize: number,
 	_name: string
 ): Promise<ProductsList> => {
 	const pageToken: number = parseInt(_pageToken);
-	const productsList = await _asyncProductsList(_pageSize, pageToken, _category, _name);
+	const productsList: ProductsList = await _asyncProductsList(_pageSize, pageToken, _category, _name);
 	if (productsList.products) {
 		return productsList
 	} else {

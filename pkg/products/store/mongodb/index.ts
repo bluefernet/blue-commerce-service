@@ -59,6 +59,8 @@ export const asyncProductsList = async (
 		_nextPageToken = Buffer.from(_nextPageToken).toString("base64");
 	}
 
+	console.log(_nextPageToken, collectionLength)
+
 	let productsList: ProductsList = {
 		products: products,
 		nextPageToken: _nextPageToken,
