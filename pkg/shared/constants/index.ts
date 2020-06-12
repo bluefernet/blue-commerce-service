@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// TASK OBJECT DIFFERENT STATUS CYCLE
+// ORDER OBJECT DIFFERENT STATUS CYCLE
 //-----------------------------------------------------------------------------
 export const ORDER_STATUS_CART = 'CART';
 export const ORDER_STATUS_SENT = 'SENT';

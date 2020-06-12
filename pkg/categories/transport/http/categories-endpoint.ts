@@ -18,7 +18,7 @@ app.use(json());
 app.use(urlencoded());
 app.use(cors(corsOptions));
 
-// POST - /tasks
+// GET - /CATEGORY
 
 app.get(
 	'*',

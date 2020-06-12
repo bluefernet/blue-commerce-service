@@ -33,7 +33,7 @@ export const asyncGetCategory =
 		if (category) {
 			return category
 		} else {
-			throw new Error('There is no task with the specified id');
+			throw new Error('There is no Category with the specified id');
 		}
 
 	}
